@@ -6,3 +6,5 @@ cmake_minimum_required(VERSION 3.16)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(st77903_test)
+
+idf_build_set_property(COMPILE_OPTIONS -I${PROJECT_DIR}/components/lv_port/ APPEND)
