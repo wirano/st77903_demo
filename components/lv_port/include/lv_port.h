@@ -1,0 +1,1 @@
+void lvgl_init();
