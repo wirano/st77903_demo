@@ -8,7 +8,7 @@
 // support lcd modules: DXQ1D602, YDP160B001_V6, H0165Y003_V1,
 #define LCD_MODULE          DXQ1D602
 // set color depth 16 for RGB565, 18 for RGB666 24 for RGB888
-#define LCD_BPP             (24)
+#define LCD_BPP             (16)
 
 //#define BIST_MODE
 
