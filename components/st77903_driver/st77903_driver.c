@@ -12,7 +12,7 @@
 #include "st77903_init_para.h"
 
 
-static const char *TAG = "st77903_driver";
+#define TAG "st77903_driver"
 
 async_memcpy_t async_flush = NULL;
 SemaphoreHandle_t flush_async_sem = NULL;
@@ -194,7 +194,7 @@ _Noreturn static void lcd_frame_flush(void *args) {
         }
 
         /* transmit completed, can update frame cache in blanking time */
-        vTaskDelay(15 / portTICK_PERIOD_MS);
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 
 //    for (int i = 0; i < LCD_Y_SIZE; ++i) {
@@ -241,7 +241,7 @@ static void _qspi_init(void) {
             .clock_speed_hz = lcd_desc.spi_freq,
             .mode=0,                                //SPI mode 0 CPOL=0 CPHA=0
             .spics_io_num=lcd_desc.cs_pin,
-            .queue_size=3,
+            .queue_size=40,
             .flags = SPI_DEVICE_HALFDUPLEX,
     };
 
@@ -316,14 +316,14 @@ void _gpio_init(void) {
 static void _write_para(void) {
     ESP_LOGI(TAG, "Writing LCD parameters.");
     gpio_set_level(lcd_desc.rst_pin, 0);
-    vTaskDelay(10 / portTICK_PERIOD_MS);
+    vTaskDelay(pdMS_TO_TICKS(10));
     gpio_set_level(lcd_desc.rst_pin, 1);
-    vTaskDelay(120 / portTICK_PERIOD_MS);
+    vTaskDelay(pdMS_TO_TICKS(120));
 
     for (int i = 0; i < sizeof(st77903_init_parameter) /
                         sizeof(st77903_init_para_t); ++i) {
         if (st77903_init_parameter[i].cmd == 0xff) {
-            vTaskDelay(st77903_init_parameter[i].data[0] / portTICK_PERIOD_MS);
+            vTaskDelay(pdMS_TO_TICKS(st77903_init_parameter[i].data[0]));
         } else {
             lcdqspi_transmit(st77903_init_parameter[i].cmd,
                              st77903_init_parameter[i].len,

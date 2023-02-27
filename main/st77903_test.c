@@ -10,7 +10,7 @@
 #include "lv_port.h"
 
 
-static const char *TAG = "main";
+#define TAG "main"
 
 void app_main(void) {
     lvgl_init();
