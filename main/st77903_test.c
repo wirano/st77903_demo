@@ -1,9 +1,5 @@
-#include <stdio.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
-#include <driver/gpio.h>
-#include <driver/spi_master.h>
-#include <esp_err.h>
 #include <esp_log.h>
 
 #include "st77903_driver.h"

@@ -53,9 +53,8 @@ void lcdqspi_fill_block(uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1,
     }
 #elif LCD_BPP == 16
     if ((x1 < LCD_X_SIZE) && (y1 < LCD_Y_SIZE) && (x1 >= x0) && (y1 >= y0)) {
-        uint32_t x, y;
-        for (y = y0; y <= y1; y++) {
-            memset(&frame_buffer[y][x0], color, (x1 - x0 + 1) * LCD_HBYTE);
+        for (int y = y0; y <= y1; y++) {
+            memset(&frame_buffer[y][x0], color, (x1 - x0 + 1) * LCD_PBYTE);
         }
     }
 #endif
@@ -65,7 +64,7 @@ void lcdqspi_clear(uint32_t color) {
 #if LCD_BPP == 24
     lcdqspi_fill_block(0, 0, LCD_X_SIZE - 1, LCD_Y_SIZE - 1, color);
 #elif LCD_BPP == 16
-//    memset(frame_buffer, color, LCD_HBYTE * LCD_X_SIZE);
+//    memset(frame_buffer, color, LCD_PBYTE * LCD_X_SIZE);
     lcdqspi_fill_block(0, 0, LCD_X_SIZE - 1, LCD_Y_SIZE - 1, color);
 #endif
 }
@@ -256,7 +255,7 @@ static void _qspi_init(void) {
 void _gpio_init(void) {
     ESP_LOGI(TAG, "Initializing none QSPI GPIOs.");
     gpio_config_t io_conf = {};
-    io_conf.pin_bit_mask = (1U << lcd_desc.rst_pin);
+    io_conf.pin_bit_mask = (1ULL << lcd_desc.rst_pin);
     io_conf.mode = GPIO_MODE_OUTPUT;
     ESP_ERROR_CHECK(gpio_config(&io_conf));
 

@@ -4,6 +4,7 @@
 #include "freertos/task.h"
 #include "esp_freertos_hooks.h"
 #include "esp_timer.h"
+#include "esp_log.h"
 
 #include "lvgl/lvgl.h"
 
@@ -22,8 +23,10 @@ static void lvgl_task(void *args);
 
 static void lvgl_task(void *args) {
 
+    ESP_LOGI(TAG, "Initializing lv");
     lv_init();
 
+    ESP_LOGI(TAG, "Initializing lv_disp");
     lv_port_disp_init();
 
     lv_port_indev_init();
@@ -52,7 +55,8 @@ static void lvgl_task(void *args) {
 
 void lvgl_init() {
 
-    xTaskCreatePinnedToCore(lvgl_task, "lvgl", 4096 * 2, NULL, 0, NULL, 1);
+    ESP_LOGI(TAG, "Creating lvgl task");
+    xTaskCreatePinnedToCore(lvgl_task, "lvgl", 4096, NULL, 0, NULL, 1);
 }
 
 // use LV_TICK_CUSTOM instead, in lv_conf.h

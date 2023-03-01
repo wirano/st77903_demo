@@ -1,5 +1,5 @@
-#include <hal/spi_types.h>
-#include <hal/gpio_types.h>
+#include "hal/spi_types.h"
+#include "hal/gpio_types.h"
 #include "hal/ledc_types.h"
 
 typedef struct {
